@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import './App.css';
 import Form from './components/Form';
 import TodoList from './components/TodoList';
@@ -6,6 +6,28 @@ import TodoList from './components/TodoList';
 function App() {
   const [inputText, setInputText] = useState("");
   const [todos, setTodos] = useState([]);
+
+  useEffect(() => {
+    fetchLocalTodos();
+  }, [])
+
+  useEffect(() => {
+    saveLocalTodos();
+  }, [todos])
+
+  const saveLocalTodos = () => {
+    localStorage.setItem('todos', JSON.stringify(todos)); 
+  }
+
+  const fetchLocalTodos = () => {
+    let localTodos = [];
+    if (localStorage.getItem("todos") === null){
+      localTodos = localStorage.setItem('todos', JSON.stringify([]));
+    }else{
+      let todoLocal = JSON.parse(localStorage.getItem("todos"));
+      setTodos(todoLocal);
+    }
+  }
 
   return (
     <div className="App">
