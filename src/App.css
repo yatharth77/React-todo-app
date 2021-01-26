@@ -62,7 +62,7 @@ form button:hover {
   flex: 1;
 }
 
-.complete-btn, .trash-btn, .edit-btn, .save-btn{
+.complete-btn, .trash-btn, .edit-btn, .save-btn, .add-todo-btn{
   background: #314755;
   color: white;
   border: none;
