@@ -3,17 +3,19 @@ import React, {useState} from 'react';
 const Todo = ({ todo, todos, setTodos, parentStatus ,level, completeTodos, flag, setFlag }) => {
     const [inputSubTodoText, setInputSubTodoText] = useState("");
 
+    function forceRender(){
+        localStorage.setItem('todos', JSON.stringify(completeTodos)); 
+        setFlag(!flag);
+    }
     const deleteHandler = (e) => {
         e.preventDefault();
         todos.splice(todos.indexOf(todo), 1);
-        localStorage.setItem('todos', JSON.stringify(completeTodos)); 
-        setFlag(!flag);
+        forceRender();
     };
 
     const completeHandler = () => {
         todo.completed = !todo.completed;
-        localStorage.setItem('todos', JSON.stringify(completeTodos)); 
-        setFlag(!flag);
+        forceRender();
     }
 
     const inputSubTodoTextHandler = (e) => {
@@ -24,9 +26,7 @@ const Todo = ({ todo, todos, setTodos, parentStatus ,level, completeTodos, flag,
     const addSubTodoHandler = (e) => {
         e.preventDefault();
         todo.subTodos.push( { text: inputSubTodoText, completed: false, level: level + 1, id: Math.floor(Math.random() * 1000), subTodos: [] });
-        localStorage.setItem('todos', JSON.stringify(completeTodos)); 
-        setTodos(completeTodos);
-        setFlag(!flag);
+        forceRender();
         setInputSubTodoText('');
     }
 
