@@ -5,7 +5,7 @@ const hasSubTodos = (todo) => {
     return todo.subTodos && todo.subTodos.length;
 }
 
-const TodoList = ({ todos, setTodos, parentStatus, completeTodos, flag, setFlag }) => {
+const TodoList = ({ todos, setTodos, parentStatus, parentTodo, completeTodos, flag, setFlag }) => {
     return (
         <div className="todo-container">
             <ul className="todo-list">
@@ -17,6 +17,7 @@ const TodoList = ({ todos, setTodos, parentStatus, completeTodos, flag, setFlag 
                             setTodos={setTodos} 
                             level={todo.level}
                             parentStatus={parentStatus}
+                            parentTodo={parentTodo}
                             completeTodos={completeTodos}
                             flag={flag}
                             setFlag={setFlag}
@@ -24,7 +25,9 @@ const TodoList = ({ todos, setTodos, parentStatus, completeTodos, flag, setFlag 
                         { hasSubTodos(todo) ? <TodoList 
                                                 setTodos={setTodos} 
                                                 todos={todo.subTodos} 
+                                                parentTodo={todo}
                                                 parentStatus={todo.completed || parentStatus}
+                                                parentTodo={todo}
                                                 completeTodos={completeTodos}
                                                 flag={flag}
                                                 setFlag={setFlag}

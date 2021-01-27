@@ -10,7 +10,7 @@ const Form = ({ todos, setTodos, inputText, setInputText }) => {
         e.preventDefault();
         setTodos([
             ...todos,
-            { text: inputText, completed: false, level: 1, id: Math.floor(Math.random() * 1000), subTodos: [] }
+            { text: inputText, completed: false, childStatus: false, level: 1, id: Math.floor(Math.random() * 1000), subTodos: [] }
         ]);
         setInputText('');
     }

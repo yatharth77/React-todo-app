@@ -1,12 +1,13 @@
 import React, {useState} from 'react';
 
-const Todo = ({ todo, todos, setTodos, parentStatus ,level, completeTodos, flag, setFlag }) => {
+const Todo = ({ todo, todos, setTodos, parentStatus, parentTodo, level, completeTodos, flag, setFlag }) => {
     const [inputSubTodoText, setInputSubTodoText] = useState("");
 
     function forceRender(){
         localStorage.setItem('todos', JSON.stringify(completeTodos)); 
         setFlag(!flag);
     }
+
     const deleteHandler = (e) => {
         e.preventDefault();
         todos.splice(todos.indexOf(todo), 1);
@@ -15,6 +16,13 @@ const Todo = ({ todo, todos, setTodos, parentStatus ,level, completeTodos, flag,
 
     const completeHandler = () => {
         todo.completed = !todo.completed;
+        let solveChildrenStatus = true;
+        todos.map((item) => {
+            solveChildrenStatus = solveChildrenStatus && (item.completed || (item.subTodos.length && item.childStatus));
+        })
+        if(parentTodo){
+            parentTodo.childStatus = solveChildrenStatus;
+        }
         forceRender();
     }
 
@@ -25,27 +33,13 @@ const Todo = ({ todo, todos, setTodos, parentStatus ,level, completeTodos, flag,
 
     const addSubTodoHandler = (e) => {
         e.preventDefault();
-        todo.subTodos.push( { text: inputSubTodoText, completed: false, level: level + 1, id: Math.floor(Math.random() * 1000), subTodos: [] });
+        todo.subTodos.push( { text: inputSubTodoText, completed: false, childStatus: false, level: level + 1, id: Math.floor(Math.random() * 1000), subTodos: [] });
         forceRender();
         setInputSubTodoText('');
     }
 
-    const handleUpadte = (Todos, id) => {
-        let temp = [];
-        Todos.map((item) => {
-            if(item.id === id){
-                item.subTodos.push({ text: inputSubTodoText, completed: false, level: level + 1, id: Math.floor(Math.random() * 1000), subTodos: [] });
-                return Todos;
-            }
-            if(item.subTodos && item.subTodos.length){
-                item.subTodos = handleUpadte(item.subTodos, id);
-            }
-        })
-        return Todos;
-    }
-
     return(
-        <div className={`todo ${todo.completed || parentStatus ? "completed" : ""}`}>
+        <div className={`todo ${(todo.completed || parentStatus || (todo && todo.subTodos.length && todo.childStatus)) ? "completed" : ""}`}>
             <li className="todo-item" >{ todo.text }</li>
             <input value={inputSubTodoText} onChange={inputSubTodoTextHandler} type="text" className="todo-input" />
             <button onClick={completeHandler} className="complete-btn">
