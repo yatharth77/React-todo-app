@@ -1,17 +1,19 @@
 import React, {useState} from 'react';
 
-const Todo = ({ todo, todos, setTodos, parentStatus ,level, completeTodos }) => {
+const Todo = ({ todo, todos, setTodos, parentStatus ,level, completeTodos, flag, setFlag }) => {
     const [inputSubTodoText, setInputSubTodoText] = useState("");
 
     const deleteHandler = (e) => {
         e.preventDefault();
         todos.splice(todos.indexOf(todo), 1);
         localStorage.setItem('todos', JSON.stringify(completeTodos)); 
+        setFlag(!flag);
     };
 
     const completeHandler = () => {
         todo.completed = !todo.completed;
         localStorage.setItem('todos', JSON.stringify(completeTodos)); 
+        setFlag(!flag);
     }
 
     const inputSubTodoTextHandler = (e) => {
@@ -23,8 +25,8 @@ const Todo = ({ todo, todos, setTodos, parentStatus ,level, completeTodos }) => 
         e.preventDefault();
         todo.subTodos.push( { text: inputSubTodoText, completed: false, level: level + 1, id: Math.floor(Math.random() * 1000), subTodos: [] });
         localStorage.setItem('todos', JSON.stringify(completeTodos)); 
-        // setTodos(() => handleUpadte(completeTodos, todo.id));
-        // console.log(handleUpadte(completeTodos, todo.id));
+        setTodos(completeTodos);
+        setFlag(!flag);
         setInputSubTodoText('');
     }
 

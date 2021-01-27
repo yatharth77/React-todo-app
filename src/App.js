@@ -6,6 +6,7 @@ import TodoList from './components/TodoList';
 function App() {
   const [inputText, setInputText] = useState("");
   const [todos, setTodos] = useState([]);
+  const [flag, setFlag] = useState(false);
 
   useEffect(() => {
     fetchLocalTodos();
@@ -35,7 +36,7 @@ function App() {
         <h1>React Todo List</h1>
       </header>
       <Form todos={todos} setTodos={setTodos} inputText={inputText} setInputText={setInputText} />
-      <TodoList setTodos={setTodos} todos={todos} parentStatus={false} completeTodos={todos} />
+      <TodoList setTodos={setTodos} todos={todos} parentStatus={false} completeTodos={todos} flag={flag} setFlag={setFlag} />
     </div>
   );
 }
